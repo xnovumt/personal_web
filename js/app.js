@@ -32,10 +32,8 @@
       ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])
     );
 
-  // Portada de reserva: gradiente determinista por título + iniciales.
+  // Portada de reserva: ficha de catálogo (tinta plana de la categoría + iniciales).
   function fallbackPoster(item) {
-    let h = 0;
-    for (const ch of item.title) h = (h * 31 + ch.charCodeAt(0)) % 360;
     const initials = item.title
       .replace(/[^\p{L}\p{N} ]/gu, "")
       .split(/\s+/)
@@ -43,8 +41,7 @@
       .map((w) => w[0] || "")
       .join("")
       .toUpperCase();
-    const bg = `linear-gradient(135deg, hsl(${h} 55% 30%), hsl(${(h + 40) % 360} 60% 18%))`;
-    return `<div class="poster-fallback" style="background:${bg}">${esc(initials)}</div>`;
+    return `<span class="poster-fallback"><span class="pf-initials">${esc(initials)}</span><span class="pf-label">${esc(TYPES[item.type] || item.type)}</span></span>`;
   }
 
   const posterInner = (item) =>
@@ -66,20 +63,21 @@
   };
 
   function cardHTML(item) {
-    const color = `var(--type-${item.type})`;
-    const fav = item.favorite
-      ? `<span class="fav-mark" title="Favorito"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="m12 21-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.18L12 21Z"/></svg></span>`
-      : "";
+    const label = esc(TYPES[item.type] || item.type);
+    const fav = item.favorite ? `<span class="fav-stamp">${STAR}FAV</span>` : "";
     return `
-      <button class="card" data-id="${esc(item.id)}" aria-label="${esc(item.title)} — ver detalle">
+      <button class="card t-${esc(item.type)}" data-id="${esc(item.id)}" aria-label="${esc(item.title)} — ver detalle">
         <span class="poster">
-          <span class="badge-type" style="background:${color}">${esc(TYPES[item.type] || item.type)}</span>
+          <span class="tag">${label}</span>
           ${fav}
-          <span class="rating-badge">${STAR}${item.rating.toFixed(1)}</span>
+          <span class="rating">${STAR}${item.rating.toFixed(1)}</span>
           ${posterInner(item)}
         </span>
-        <span class="card-title">${esc(item.title)}</span>
-        <span class="card-meta">${esc(item.creator)} · ${item.year}</span>
+        <span class="card-body">
+          <span class="card-kicker">${label}</span>
+          <span class="card-title">${esc(item.title)}</span>
+          <span class="card-meta">${esc(item.creator)} · ${item.year}</span>
+        </span>
       </button>`;
   }
 
@@ -93,9 +91,11 @@
     const media = getMedia();
     const counts = { all: media.length };
     for (const m of media) counts[m.type] = (counts[m.type] || 0) + 1;
-    $("#stats").innerHTML = Object.entries(TYPES)
-      .filter(([k]) => k === "all" || counts[k])
-      .map(([k, label]) => `<span class="stat-pill"><b>${counts[k] || 0}</b> ${esc(label)}</span>`)
+    const pad = (n) => String(n).padStart(2, "0");
+    const labels = { all: "Títulos", movie: "Cine", series: "Series", music: "Música", anime: "Anime" };
+    $("#stats").innerHTML = Object.keys(labels)
+      .filter((k) => k === "all" || counts[k])
+      .map((k) => `<span class="stat${k === "all" ? " is-total" : ""}"><b>${pad(counts[k] || 0)}</b> ${esc(labels[k])}</span>`)
       .join("");
   }
 
@@ -112,11 +112,12 @@
   function openModal(item) {
     const genres = (item.genres || []).map((g) => `<span class="chip">${esc(g)}</span>`).join("");
     modalBody.innerHTML = `
-      <div class="detail">
+      <div class="detail t-${esc(item.type)}">
         <div class="detail-poster">${posterInner(item)}</div>
         <div class="detail-info">
+          <p class="detail-kicker">${esc(TYPES[item.type] || item.type)}</p>
           <h2 id="modal-title">${esc(item.title)}</h2>
-          <p class="card-meta">${esc(TYPES[item.type] || item.type)} · ${esc(item.creator)} · ${item.year}</p>
+          <p class="detail-meta">${esc(item.creator)} · ${item.year}</p>
           <p class="detail-rating">${STAR}${item.rating.toFixed(1)} / 5</p>
           <div class="genres">${genres}</div>
           ${item.note ? `<p class="detail-note">${esc(item.note)}</p>` : ""}
@@ -168,7 +169,27 @@
     if (e.key === "Escape" && !modal.hidden) closeModal();
   });
 
+  // ---------- Tema ----------
+  const themeBtn = $("#theme-toggle");
+  const MOON = '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.11-1.36A5.39 5.39 0 0 1 12 3Z"/></svg>';
+  const SUN = '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10Zm0-6h.01M12 23h.01M1 12h.01M23 12h.01M4 4l.01.01M20 20l.01.01M20 4l.01.01M4 20l.01.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
+
+  function syncThemeBtn() {
+    const dark = document.documentElement.dataset.theme === "dark";
+    themeBtn.innerHTML = dark ? SUN + "<span>Día</span>" : MOON + "<span>Noche</span>";
+    themeBtn.setAttribute("aria-pressed", String(dark));
+    themeBtn.setAttribute("aria-label", dark ? "Cambiar a modo día" : "Cambiar a modo noche");
+  }
+
+  themeBtn.addEventListener("click", () => {
+    const next = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
+    document.documentElement.dataset.theme = next;
+    try { localStorage.setItem("theme", next); } catch (e) {}
+    syncThemeBtn();
+  });
+
   // ---------- Init ----------
+  syncThemeBtn();
   renderStats();
   renderTabs();
   render();
