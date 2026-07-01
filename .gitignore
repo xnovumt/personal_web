@@ -1,0 +1,17 @@
+# Sistema operativo
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editores
+.vscode/
+.idea/
+
+# Config local de Claude Code (no es parte del sitio)
+.claude/
+
+# Vercel
+.vercel
+
+# Dependencias (por si más adelante se añade tooling)
+node_modules/
