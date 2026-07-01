@@ -10,6 +10,9 @@ desktop.ini
 # Config local de Claude Code (no es parte del sitio)
 .claude/
 
+# Bundle original del favicon (los archivos servidos se copian a la raíz)
+favicon/
+
 # Vercel
 .vercel
 
