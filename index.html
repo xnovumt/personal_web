@@ -7,8 +7,14 @@
   <script>
     (function(){try{var t=localStorage.getItem("theme");if(t!=="light"&&t!=="dark")t=matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";document.documentElement.dataset.theme=t;}catch(e){}})();
   </script>
-  <title>Mi Catálogo — almanaque de cine, series, música y anime</title>
-  <meta name="description" content="Almanaque personal de películas, series, música y anime que he visto, escuchado y me gustaron." />
+  <title>emotions vault — cine, series, música y anime</title>
+  <meta name="description" content="Bóveda personal de emociones: películas, series, música y anime que he visto, escuchado y me marcaron." />
+
+  <link rel="icon" type="image/png" href="favicon-96x96.png" sizes="96x96" />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="shortcut icon" href="favicon.ico" />
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
+  <link rel="manifest" href="/site.webmanifest" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -19,7 +25,7 @@
   <header class="site-header">
     <div class="wrap">
       <div class="masthead-strip">
-        <span>Almanaque de cultura</span>
+        <span>Bóveda de emociones</span>
         <div class="strip-right">
           <span class="strip-cats"><span class="accent">Cine</span> · Series · Música · Anime</span>
           <button class="theme-toggle" id="theme-toggle" type="button"></button>
@@ -31,8 +37,8 @@
             <svg viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" d="M8 5v14l11-7L8 5Z"/></svg>
           </span>
           <div>
-            <h1 class="wordmark">Mi Catálogo</h1>
-            <p class="tagline">Lo que he visto, escuchado y me marcó — archivado a mano.</p>
+            <h1 class="wordmark">emotions vault</h1>
+            <p class="tagline">Lo que he visto, escuchado y me marcó — guardado bajo llave.</p>
           </div>
         </div>
         <div class="ledger" id="stats" aria-live="polite"></div>
@@ -43,6 +49,7 @@
   <nav class="controls wrap" aria-label="Filtros del catálogo">
     <div class="tabs" id="tabs" role="tablist"></div>
     <div class="controls-right">
+      <button class="genre-btn" id="genre-btn" type="button" hidden aria-expanded="false" aria-controls="genre-panel"></button>
       <label class="search">
         <svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true"><path fill="currentColor" d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 1 0-.7.7l.27.28v.79l5 4.99L20.49 19l-4.99-5Zm-6 0A4.5 4.5 0 1 1 14 9.5 4.49 4.49 0 0 1 9.5 14Z"/></svg>
         <input type="search" id="search" placeholder="Buscar título…" aria-label="Buscar por título" />
@@ -59,16 +66,18 @@
     </div>
   </nav>
 
+  <div class="genre-panel wrap" id="genre-panel" hidden aria-label="Filtrar por género"></div>
+
   <main class="wrap">
     <section id="grid" class="grid" aria-label="Colección"></section>
     <div id="empty" class="empty" hidden>
-      <p>El archivo está vacío.</p>
+      <p>La bóveda está vacía.</p>
       <p class="empty-hint">Prueba con otro filtro o búsqueda.</p>
     </div>
   </main>
 
   <footer class="site-footer wrap">
-    <p>Almanaque personal · sitio estático · edición continua.</p>
+    <p>emotions vault · bóveda personal · sitio estático.</p>
   </footer>
 
   <div class="modal" id="modal" hidden>

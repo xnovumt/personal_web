@@ -8,21 +8,55 @@
 
   const getMedia = () => (Array.isArray(window.MEDIA) ? window.MEDIA : []);
 
-  const TYPES = {
-    all: "Todo",
-    movie: "Películas",
-    series: "Series",
-    music: "Música",
-    anime: "Anime"
+  const TYPES = { all: "Todo", movie: "Películas", series: "Series", music: "Música", anime: "Anime" };
+
+  // Icono de línea minimalista, hereda el color del texto.
+  const svg = (inner) =>
+    `<svg viewBox="0 0 24 24" class="ic" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${inner}</svg>`;
+
+  const CATEGORY_ICONS = {
+    all: svg('<rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/>'),
+    movie: svg('<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 4v16M17 4v16M3 9h4M3 15h4M17 9h4M17 15h4"/>'),
+    series: svg('<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 3l4 4 4-4"/>'),
+    music: svg('<circle cx="6" cy="18" r="2.5"/><circle cx="16" cy="16" r="2.5"/><path d="M8.5 18V5l10-2v11"/>'),
+    anime: svg('<path d="M12 3l2.2 6.1L20.5 12l-6.3 2.9L12 21l-2.2-6.1L3.5 12l6.3-2.9L12 3z"/>')
   };
 
-  const state = { type: "all", query: "", sort: "recent" };
+  // Iconos por género (familias) + reserva.
+  const GI = {
+    star: svg('<path d="M12 3l2.5 6.3 6.5.4-5 4.2 1.6 6.4L12 17.3 5.9 20.7l1.6-6.4-5-4.2 6.5-.4L12 3z"/>'),
+    compass: svg('<circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2.2 5.3-5.3 2.2 2.2-5.3 5.3-2.2z"/>'),
+    rocket: svg('<path d="M12 3c3 2.2 4.5 5.2 4.5 9L12 21l-4.5-9C7.5 8.2 9 5.2 12 3z"/><circle cx="12" cy="10" r="1.4"/><path d="M9 16l-2.5 3.5M15 16l2.5 3.5"/>'),
+    magnifier: svg('<circle cx="11" cy="11" r="6"/><path d="M20 20l-4.3-4.3"/>'),
+    masks: svg('<path d="M4 5c0 7.5 3.5 12 8 12s8-4.5 8-12c-5.3-1-10.7-1-16 0z"/><circle cx="9" cy="9.5" r=".6"/><circle cx="15" cy="9.5" r=".6"/><path d="M9 13c1.4 1.3 4.6 1.3 6 0"/>'),
+    smile: svg('<circle cx="12" cy="12" r="9"/><circle cx="9" cy="10" r=".6"/><circle cx="15" cy="10" r=".6"/><path d="M8 14c1.6 2 6.4 2 8 0"/>'),
+    wave: svg('<path d="M4 10v4M8 7v10M12 4v16M16 8v8M20 11v2"/>'),
+    disc: svg('<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="2.5"/>'),
+    bolt: svg('<path d="M13 3L5 13h5l-1 8 8-11h-5l1-7z"/>'),
+    tag: svg('<path d="M4 4h8l8 8-8 8-8-8V4z"/><circle cx="8" cy="8" r="1.2"/>')
+  };
+  const GENRE_ICON = {
+    "fantasía": GI.star, "fantasía oscura": GI.star,
+    "aventura": GI.compass,
+    "ciencia ficción": GI.rocket,
+    "neo-noir": GI.magnifier, "crimen": GI.magnifier, "thriller": GI.magnifier,
+    "drama": GI.masks, "drama social": GI.masks,
+    "comedia": GI.smile,
+    "electrónica": GI.wave,
+    "disco": GI.disc,
+    "rock alternativo": GI.bolt, "art rock": GI.bolt
+  };
+  const genreIcon = (g) => GENRE_ICON[g.toLowerCase()] || GI.tag;
+
+  const state = { type: "all", query: "", sort: "recent", genre: null };
 
   const $ = (sel) => document.querySelector(sel);
   const grid = $("#grid");
   const emptyEl = $("#empty");
   const modal = $("#modal");
   const modalBody = $("#modal-body");
+  const genreBtn = $("#genre-btn");
+  const genrePanel = $("#genre-panel");
   let lastFocused = null;
 
   const STAR = '<svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path fill="currentColor" d="m12 17.27 5.18 3.12-1.37-5.9 4.58-3.96-6.03-.52L12 4.5 9.64 10.01l-6.03.52 4.58 3.96-1.37 5.9L12 17.27Z"/></svg>';
@@ -51,6 +85,7 @@
 
   function matches(item) {
     if (state.type !== "all" && item.type !== state.type) return false;
+    if (state.genre && !(item.genres || []).includes(state.genre)) return false;
     if (state.query && !item.title.toLowerCase().includes(state.query)) return false;
     return true;
   }
@@ -101,16 +136,50 @@
 
   function renderTabs() {
     $("#tabs").innerHTML = Object.entries(TYPES)
-      .map(
-        ([k, label]) =>
-          `<button class="tab" role="tab" data-type="${k}" aria-selected="${k === state.type}">${esc(label)}</button>`
+      .map(([k, label]) =>
+        `<button class="tab" role="tab" data-type="${k}" aria-selected="${k === state.type}">${CATEGORY_ICONS[k] || ""}<span class="tab-label">${esc(label)}</span></button>`
       )
       .join("");
   }
 
+  // ---------- Géneros ----------
+  function availableGenres() {
+    const set = new Set();
+    for (const m of getMedia()) {
+      if (state.type !== "all" && m.type !== state.type) continue;
+      (m.genres || []).forEach((g) => set.add(g));
+    }
+    return [...set].sort((a, b) => a.localeCompare(b, "es"));
+  }
+
+  function renderGenrePanel() {
+    const chip = (g, active, label) =>
+      `<button class="genre-chip${active ? " is-active" : ""}" data-genre="${esc(g)}" aria-pressed="${active}">${g ? genreIcon(g) : GI.tag}<span>${esc(label)}</span></button>`;
+    genrePanel.innerHTML =
+      chip("", !state.genre, "Todos") +
+      availableGenres().map((g) => chip(g, state.genre === g, g)).join("");
+  }
+
+  function syncGenreBtn() {
+    genreBtn.innerHTML = `${GI.tag}<span>${esc(state.genre || "Género")}</span>`;
+    genreBtn.classList.toggle("is-filtering", !!state.genre);
+  }
+
+  function updateGenreControl() {
+    const inSection = state.type !== "all";
+    genreBtn.hidden = !inSection;
+    if (!inSection) {
+      state.genre = null;
+      genrePanel.hidden = true;
+      genreBtn.setAttribute("aria-expanded", "false");
+    }
+    syncGenreBtn();
+    if (!genrePanel.hidden) renderGenrePanel();
+  }
+
   // ---------- Modal ----------
   function openModal(item) {
-    const genres = (item.genres || []).map((g) => `<span class="chip">${esc(g)}</span>`).join("");
+    const genres = (item.genres || []).map((g) => `<span class="chip">${genreIcon(g)}${esc(g)}</span>`).join("");
     modalBody.innerHTML = `
       <div class="detail t-${esc(item.type)}">
         <div class="detail-poster">${posterInner(item)}</div>
@@ -147,7 +216,9 @@
     const tab = e.target.closest(".tab");
     if (!tab) return;
     state.type = tab.dataset.type;
+    state.genre = null;
     renderTabs();
+    updateGenreControl();
     render();
   });
 
@@ -158,6 +229,22 @@
 
   $("#sort").addEventListener("change", (e) => {
     state.sort = e.target.value;
+    render();
+  });
+
+  genreBtn.addEventListener("click", () => {
+    const open = genrePanel.hidden;
+    genrePanel.hidden = !open;
+    genreBtn.setAttribute("aria-expanded", String(open));
+    if (open) renderGenrePanel();
+  });
+
+  genrePanel.addEventListener("click", (e) => {
+    const chip = e.target.closest(".genre-chip");
+    if (!chip) return;
+    state.genre = chip.dataset.genre || null;
+    syncGenreBtn();
+    renderGenrePanel();
     render();
   });
 
@@ -192,5 +279,6 @@
   syncThemeBtn();
   renderStats();
   renderTabs();
+  updateGenreControl();
   render();
 })();

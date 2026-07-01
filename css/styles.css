@@ -119,13 +119,15 @@ body > * { position: relative; z-index: 2; }
 }
 .tabs { display: flex; flex-wrap: wrap; gap: 6px; }
 .tab {
-  font-family: var(--mono); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.06em;
-  cursor: pointer; color: var(--ink); background: transparent; border: 0;
-  padding: 8px 12px 6px; min-height: 40px; border-bottom: 3px solid transparent;
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+  font-family: var(--mono); font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.08em;
+  cursor: pointer; color: var(--ink-soft); background: transparent; border: 0;
+  padding: 8px 12px 6px; min-width: 66px; border-bottom: 3px solid transparent;
   transition: color var(--speed), border-color var(--speed);
 }
+.tab .ic { width: 24px; height: 24px; }
 .tab:hover { color: var(--accent); }
-.tab[aria-selected="true"] { border-bottom-color: var(--accent); font-weight: 700; }
+.tab[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--accent); font-weight: 700; }
 .tab:focus-visible, .search input:focus-visible, .sort select:focus-visible {
   outline: 3px solid var(--accent); outline-offset: 2px;
 }
@@ -139,6 +141,29 @@ body > * { position: relative; z-index: 2; }
 .sort select { font-family: var(--mono); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.04em;
   cursor: pointer; color: var(--ink); background: var(--paper-2); border: 1.5px solid var(--ink);
   border-radius: var(--radius); padding: 10px 12px; min-height: 42px; }
+
+/* Filtro por género */
+.genre-btn { display: inline-flex; align-items: center; gap: 7px; cursor: pointer;
+  font-family: var(--mono); font-size: 0.76rem; text-transform: uppercase; letter-spacing: 0.05em;
+  color: var(--ink); background: var(--paper-2); border: 1.5px solid var(--ink);
+  border-radius: var(--radius); padding: 9px 12px; min-height: 42px; max-width: 220px;
+  transition: background var(--speed), color var(--speed), border-color var(--speed); }
+.genre-btn[hidden] { display: none; }
+.genre-btn .ic { width: 16px; height: 16px; flex-shrink: 0; }
+.genre-btn span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.genre-btn:hover, .genre-btn.is-filtering { background: var(--accent); color: var(--paper-2); border-color: var(--accent); }
+.genre-btn:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+
+.genre-panel { display: flex; flex-wrap: wrap; gap: 8px; padding-block: 16px 4px; border-bottom: 1px solid var(--line); }
+.genre-panel[hidden] { display: none; }
+.genre-chip { display: inline-flex; align-items: center; gap: 6px; cursor: pointer;
+  font-family: var(--mono); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.04em;
+  color: var(--ink); background: var(--paper-2); border: 1.5px solid var(--ink); border-radius: 2px;
+  padding: 6px 10px; min-height: 38px; transition: background var(--speed), color var(--speed), border-color var(--speed); }
+.genre-chip .ic { width: 15px; height: 15px; flex-shrink: 0; }
+.genre-chip:hover { border-color: var(--accent); color: var(--accent); }
+.genre-chip.is-active { background: var(--ink); color: var(--paper-2); border-color: var(--ink); }
+.genre-chip:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
 
 /* ---------- Grid ---------- */
 .grid { display: grid; gap: 26px 22px; padding-block: 28px 56px;
@@ -218,8 +243,10 @@ body > * { position: relative; z-index: 2; }
   font-weight: 700; background: var(--ink); color: var(--paper-2); padding: 5px 10px; border-radius: 2px; }
 .detail-rating svg { color: var(--accent); }
 .genres { display: flex; flex-wrap: wrap; gap: 6px; margin: 12px 0; }
-.chip { font-family: var(--mono); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.05em;
-  padding: 4px 9px; border: 1px solid var(--ink); border-radius: 2px; color: var(--ink); }
+.chip { display: inline-flex; align-items: center; gap: 5px; font-family: var(--mono); font-size: 0.72rem;
+  text-transform: uppercase; letter-spacing: 0.05em; padding: 4px 9px; border: 1px solid var(--ink);
+  border-radius: 2px; color: var(--ink); }
+.chip .ic { width: 14px; height: 14px; }
 .detail-note { margin: 16px 0 0; font-family: var(--serif); font-size: 1.1rem; font-style: italic; line-height: 1.5; }
 .detail-note::before { content: "“"; } .detail-note::after { content: "”"; }
 
