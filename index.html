@@ -49,6 +49,10 @@
   <nav class="controls wrap" aria-label="Filtros del catálogo">
     <div class="tabs" id="tabs" role="tablist"></div>
     <div class="controls-right">
+      <button class="add-btn" id="add-btn" type="button" aria-label="Agregar ítem">
+        <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" d="M12 5v14M5 12h14"/></svg>
+        <span>Agregar</span>
+      </button>
       <button class="genre-btn" id="genre-btn" type="button" hidden aria-expanded="false" aria-controls="genre-panel"></button>
       <label class="search">
         <svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true"><path fill="currentColor" d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 1 0-.7.7l.27.28v.79l5 4.99L20.49 19l-4.99-5Zm-6 0A4.5 4.5 0 1 1 14 9.5 4.49 4.49 0 0 1 9.5 14Z"/></svg>
@@ -90,7 +94,79 @@
     </div>
   </div>
 
-  <script src="data/media.js"></script>
+  <div class="modal" id="editor-modal" hidden>
+    <div class="modal-backdrop" id="editor-backdrop" hidden data-close></div>
+    <div class="modal-card modal-card--editor" role="dialog" aria-modal="true" aria-labelledby="editor-title">
+      <button class="modal-close" data-close aria-label="Cerrar">
+        <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="currentColor" d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+      </button>
+      <div class="modal-body">
+        <h2 id="editor-title" class="editor-heading">Nuevo ítem</h2>
+        <p id="editor-feedback" class="editor-feedback" hidden></p>
+        <form id="editor-form" novalidate>
+          <div class="field">
+            <label for="editor-type">Tipo</label>
+            <select id="editor-type" required>
+              <option value="movie">Película</option>
+              <option value="series">Serie</option>
+              <option value="music">Música</option>
+              <option value="anime">Anime</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="editor-title">Título</label>
+            <input type="text" id="editor-title" required placeholder="Título" />
+          </div>
+          <div class="field">
+            <label for="editor-creator">Creador / Estudio</label>
+            <input type="text" id="editor-creator" placeholder="Director, artista o estudio" />
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label for="editor-year">Año</label>
+              <input type="number" id="editor-year" placeholder="2024" min="1800" max="2100" />
+            </div>
+            <div class="field">
+              <label for="editor-rating">Rating (0–5)</label>
+              <input type="number" id="editor-rating" placeholder="4.5" min="0" max="5" step="0.5" />
+            </div>
+            <div class="field">
+              <label for="editor-favorite">Favorito</label>
+              <input type="checkbox" id="editor-favorite" />
+            </div>
+          </div>
+          <div class="field">
+            <label for="editor-genres">Géneros (separados por coma)</label>
+            <input type="text" id="editor-genres" placeholder="Drama, Aventura" />
+          </div>
+          <div class="field">
+            <label for="editor-note">Nota personal</label>
+            <textarea id="editor-note" rows="3" placeholder="Por qué me gustó…"></textarea>
+          </div>
+          <div class="field">
+            <label for="editor-poster">URL de carátula</label>
+            <div class="poster-search">
+              <input type="url" id="editor-poster" placeholder="https://…" />
+              <button type="button" class="secondary" id="editor-search-poster">🔍 Buscar carátula</button>
+            </div>
+            <div id="editor-poster-preview" class="poster-preview"></div>
+          </div>
+          <div class="editor-actions">
+            <button type="button" class="danger" id="editor-delete" hidden>Eliminar</button>
+            <div class="editor-actions-right">
+              <button type="button" class="secondary" data-close>Cancelar</button>
+              <button type="submit" class="primary">Guardar</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="data/seeds.js"></script>
+  <script src="data/storage.js"></script>
+  <script src="js/posters.js"></script>
   <script src="js/app.js"></script>
+  <script src="js/editor.js"></script>
 </body>
 </html>

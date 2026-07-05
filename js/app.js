@@ -1,16 +1,27 @@
 /*
- * Renderiza el catálogo a partir de MEDIA (data/media.js).
- * Sin dependencias ni build: DOM plano. Toda la data entra por getMedia(),
- * así el día que haya API solo cambia esa función.
+ * app.js — Render del catálogo, filtros, búsqueda, orden y modal detalle.
+ *
+ * Cambios vs original:
+ *  - Ahora lee a través de storage.loadMedia().
+ *  - Expone window.vaultRefresh() para re-renderizar tras cambios CRUD.
  */
 (function () {
   "use strict";
 
-  const getMedia = () => (Array.isArray(window.MEDIA) ? window.MEDIA : []);
+  const { loadMedia, saveMedia } = (function () {
+    try {
+      const s = window.VAULT_STORAGE;
+      return s || {};
+    } catch (_e) {
+      return {};
+    }
+  })();
+
+  const getMedia = () => (Array.isArray(loadMedia) ? loadMedia() : []);
 
   const TYPES = { all: "Todo", movie: "Películas", series: "Series", music: "Música", anime: "Anime" };
 
-  // Icono de línea minimalista, hereda el color del texto.
+  // Icono de línea minimalista
   const svg = (inner) =>
     `<svg viewBox="0 0 24 24" class="ic" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${inner}</svg>`;
 
@@ -22,7 +33,7 @@
     anime: svg('<path d="M12 3l2.2 6.1L20.5 12l-6.3 2.9L12 21l-2.2-6.1L3.5 12l6.3-2.9L12 3z"/>')
   };
 
-  // Iconos por género (familias) + reserva.
+  // Iconos por género (familias) + reserva
   const GI = {
     star: svg('<path d="M12 3l2.5 6.3 6.5.4-5 4.2 1.6 6.4L12 17.3 5.9 20.7l1.6-6.4-5-4.2 6.5-.4L12 3z"/>'),
     compass: svg('<circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2.2 5.3-5.3 2.2 2.2-5.3 5.3-2.2z"/>'),
@@ -66,7 +77,7 @@
       ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])
     );
 
-  // Portada de reserva: ficha de catálogo (tinta plana de la categoría + iniciales).
+  // Portada de reserva: ficha de catálogo (tinta plana + iniciales)
   function fallbackPoster(item) {
     const initials = item.title
       .replace(/[^\p{L}\p{N} ]/gu, "")
@@ -105,7 +116,7 @@
         <span class="poster">
           <span class="tag">${label}</span>
           ${fav}
-          <span class="rating">${STAR}${item.rating.toFixed(1)}</span>
+          <span class="rating">${STAR}${Number(item.rating).toFixed(1)}</span>
           ${posterInner(item)}
         </span>
         <span class="card-body">
@@ -187,7 +198,7 @@
           <p class="detail-kicker">${esc(TYPES[item.type] || item.type)}</p>
           <h2 id="modal-title">${esc(item.title)}</h2>
           <p class="detail-meta">${esc(item.creator)} · ${item.year}</p>
-          <p class="detail-rating">${STAR}${item.rating.toFixed(1)} / 5</p>
+          <p class="detail-rating">${STAR}${Number(item.rating).toFixed(1)} / 5</p>
           <div class="genres">${genres}</div>
           ${item.note ? `<p class="detail-note">${esc(item.note)}</p>` : ""}
         </div>
@@ -281,4 +292,12 @@
   renderTabs();
   updateGenreControl();
   render();
+
+  // API pública para re-renderizar desde el editor
+  window.vaultRefresh = function () {
+    renderStats();
+    renderTabs();
+    updateGenreControl();
+    render();
+  };
 })();
