@@ -4,7 +4,7 @@
  * Se expone en window para funcionar abriendo index.html directamente
  * (file://) sin servidor.
  */
-SEEDS = [
+window.SEEDS = [
   {
     "id": "spirited-away",
     "type": "anime",
@@ -18,7 +18,7 @@ SEEDS = [
     ],
     "note": "La cima de Ghibli: imaginación desbordante y una protagonista que crece de verdad.",
     "favorite": true,
-    "poster": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx199-sWefXJvXkDOb.jpg",
+    "poster": null,
     "added": "2024-11-02"
   },
   {
@@ -66,7 +66,7 @@ SEEDS = [
     ],
     "note": "Producción impecable; suena vivo y cálido de principio a fin.",
     "favorite": false,
-    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/e8/43/5f/e8435ffa-b6b9-b171-40ab-4ff3959ab661/886443919266.jpg/600x600bb.jpg",
+    "poster": null,
     "added": "2024-11-20"
   },
   {
@@ -82,7 +82,7 @@ SEEDS = [
     ],
     "note": "Trama, acción y temas maduros sin un solo episodio de relleno.",
     "favorite": false,
-    "poster": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx5114-nSWCgQlmOMtj.jpg",
+    "poster": null,
     "added": "2024-08-14"
   },
   {
@@ -130,7 +130,7 @@ SEEDS = [
     ],
     "note": "Su disco más cálido y humano; crece con cada escucha.",
     "favorite": true,
-    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/dd/50/c7/dd50c790-99ac-d3d0-5ab8-e3891fb8fd52/634904032463.png/600x600bb.jpg",
+    "poster": null,
     "added": "2024-06-22"
   },
   {

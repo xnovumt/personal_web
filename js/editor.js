@@ -72,6 +72,7 @@
     setField("#editor-note", item.note || "");
     setField("#editor-poster", item.poster || "");
     setField("#editor-favorite", item.favorite ? "on" : "");
+    setField("#editor-status", item.status || "pending");
     setPosterPreview(item.poster || null);
   }
 
@@ -110,6 +111,8 @@
       ? genresRaw.split(",").map((g) => g.trim()).filter(Boolean)
       : [];
 
+    const status = getField("#editor-status") || "pending";
+
     return {
       id: editingId || (typeof crypto !== "undefined" && crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`),
       type,
@@ -120,6 +123,7 @@
       genres,
       note,
       favorite,
+      status,
       poster: poster || null,
       added: editingId ? undefined : todayISO()
     };
@@ -211,6 +215,7 @@
     persist(items);
     close();
     if (typeof window.vaultRefresh === "function") window.vaultRefresh();
+    try { if (window.Cognee && typeof window.Cognee.remember === "function") window.Cognee.remember(data); } catch (e) { /* noop */ }
   }
 
   async function searchPoster() {

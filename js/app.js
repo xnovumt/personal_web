@@ -59,7 +59,7 @@
   };
   const genreIcon = (g) => GENRE_ICON[g.toLowerCase()] || GI.tag;
 
-  const state = { type: "all", query: "", sort: "recent", genre: null };
+  const state = { type: "all", query: "", sort: "recent", genre: null, status: "all" };
 
   const $ = (sel) => document.querySelector(sel);
   const grid = $("#grid");
@@ -68,6 +68,8 @@
   const modalBody = $("#modal-body");
   const genreBtn = $("#genre-btn");
   const genrePanel = $("#genre-panel");
+  const statusBtn = $("#status-btn");
+  const statusPanel = $("#status-panel");
   let lastFocused = null;
 
   const STAR = '<svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path fill="currentColor" d="m12 17.27 5.18 3.12-1.37-5.9 4.58-3.96-6.03-.52L12 4.5 9.64 10.01l-6.03.52 4.58 3.96-1.37 5.9L12 17.27Z"/></svg>';
@@ -97,6 +99,7 @@
   function matches(item) {
     if (state.type !== "all" && item.type !== state.type) return false;
     if (state.genre && !(item.genres || []).includes(state.genre)) return false;
+    if (state.status && state.status !== "all" && (item.status || "pending") !== state.status) return false;
     if (state.query && !item.title.toLowerCase().includes(state.query)) return false;
     return true;
   }
@@ -111,6 +114,7 @@
   function cardHTML(item) {
     const label = esc(TYPES[item.type] || item.type);
     const fav = item.favorite ? `<span class="fav-stamp">${STAR}FAV</span>` : "";
+    const status = (window.VAULT_STATUS && window.VAULT_STATUS.badgeHTML) ? window.VAULT_STATUS.badgeHTML(item.status) : "";
     return `
       <button class="card t-${esc(item.type)}" data-id="${esc(item.id)}" aria-label="${esc(item.title)} — ver detalle">
         <span class="poster">
@@ -123,6 +127,7 @@
           <span class="card-kicker">${label}</span>
           <span class="card-title">${esc(item.title)}</span>
           <span class="card-meta">${esc(item.creator)} · ${item.year}</span>
+          ${status ? `<span class="status-row">${status}</span>` : ""}
         </span>
       </button>`;
   }
@@ -142,8 +147,12 @@
     $("#stats").innerHTML = Object.keys(labels)
       .filter((k) => k === "all" || counts[k])
       .map((k) => `<span class="stat${k === "all" ? " is-total" : ""}"><b>${pad(counts[k] || 0)}</b> ${esc(labels[k])}</span>`)
-      .join("");
+      .join("")
+  if (window.Cognee) {
+    var st = window.Cognee.status ? window.Cognee.status() : { nodes: 0, edges: 0, memories: 0 }
+    $("#stats").insertAdjacentHTML("beforeend","<span class=\"stat is-cognee\"><b>"+esc(Math.round((st.nodes||0)+(st.edges||0)+(st.memories||0)))+"</b> Cognee</span>")
   }
+}
 
   function renderTabs() {
     $("#tabs").innerHTML = Object.entries(TYPES)
@@ -191,11 +200,12 @@
   // ---------- Modal ----------
   function openModal(item) {
     const genres = (item.genres || []).map((g) => `<span class="chip">${genreIcon(g)}${esc(g)}</span>`).join("");
+    const statusBadge = (window.VAULT_STATUS && window.VAULT_STATUS.badgeHTML) ? window.VAULT_STATUS.badgeHTML(item.status) : "";
     modalBody.innerHTML = `
       <div class="detail t-${esc(item.type)}">
         <div class="detail-poster">${posterInner(item)}</div>
         <div class="detail-info">
-          <p class="detail-kicker">${esc(TYPES[item.type] || item.type)}</p>
+          <p class="detail-kicker">${esc(TYPES[item.type] || item.type)} ${statusBadadge ? '<span class="detail-status">' + statusBadge + '</span>' : ''}</p>
           <h2 id="modal-title">${esc(item.title)}</h2>
           <p class="detail-meta">${esc(item.creator)} · ${item.year}</p>
           <p class="detail-rating">${STAR}${Number(item.rating).toFixed(1)} / 5</p>

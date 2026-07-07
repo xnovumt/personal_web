@@ -18,3 +18,9 @@ favicon/
 
 # Dependencias (por si más adelante se añade tooling)
 node_modules/
+
+
+api_key_tmdb.txt
+
+docs/
+

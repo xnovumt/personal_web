@@ -1,138 +1,7 @@
 /*
- * Catálogo base del sitio. No se modifica en runtime.
- * Para ampliar el catálogo por defecto, editar este array.
- * Se expone en window para funcionar abriendo index.html directamente
- * (file://) sin servidor.
+ * seed extra: added series, anime and movies requested by user.
  */
-SEEDS = [
-  {
-    "id": "spirited-away",
-    "type": "anime",
-    "title": "El viaje de Chihiro",
-    "creator": "Studio Ghibli",
-    "year": 2001,
-    "rating": 5,
-    "genres": [
-      "Fantasía",
-      "Aventura"
-    ],
-    "note": "La cima de Ghibli: imaginación desbordante y una protagonista que crece de verdad.",
-    "favorite": true,
-    "poster": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx199-sWefXJvXkDOb.jpg",
-    "added": "2024-11-02"
-  },
-  {
-    "id": "blade-runner-2049",
-    "type": "movie",
-    "title": "Blade Runner 2049",
-    "creator": "Denis Villeneuve",
-    "year": 2017,
-    "rating": 4.5,
-    "genres": [
-      "Ciencia ficción",
-      "Neo-noir"
-    ],
-    "note": "Fotografía hipnótica y una idea de identidad que se queda contigo.",
-    "favorite": true,
-    "poster": null,
-    "added": "2024-10-18"
-  },
-  {
-    "id": "breaking-bad",
-    "type": "series",
-    "title": "Breaking Bad",
-    "creator": "Vince Gilligan",
-    "year": 2008,
-    "rating": 5,
-    "genres": [
-      "Drama",
-      "Crimen"
-    ],
-    "note": "La transformación de personaje mejor escrita de la TV.",
-    "favorite": true,
-    "poster": null,
-    "added": "2024-09-30"
-  },
-  {
-    "id": "random-access-memories",
-    "type": "music",
-    "title": "Random Access Memories",
-    "creator": "Daft Punk",
-    "year": 2013,
-    "rating": 4.5,
-    "genres": [
-      "Electrónica",
-      "Disco"
-    ],
-    "note": "Producción impecable; suena vivo y cálido de principio a fin.",
-    "favorite": false,
-    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/e8/43/5f/e8435ffa-b6b9-b171-40ab-4ff3959ab661/886443919266.jpg/600x600bb.jpg",
-    "added": "2024-11-20"
-  },
-  {
-    "id": "fmab",
-    "type": "anime",
-    "title": "Fullmetal Alchemist: Brotherhood",
-    "creator": "Bones",
-    "year": 2009,
-    "rating": 5,
-    "genres": [
-      "Aventura",
-      "Fantasía oscura"
-    ],
-    "note": "Trama, acción y temas maduros sin un solo episodio de relleno.",
-    "favorite": false,
-    "poster": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx5114-nSWCgQlmOMtj.jpg",
-    "added": "2024-08-14"
-  },
-  {
-    "id": "parasite",
-    "type": "movie",
-    "title": "Parásitos",
-    "creator": "Bong Joon-ho",
-    "year": 2019,
-    "rating": 4.5,
-    "genres": [
-      "Thriller",
-      "Drama social"
-    ],
-    "note": "Cambia de tono como quien cambia de marcha, sin despeinarse.",
-    "favorite": false,
-    "poster": null,
-    "added": "2024-07-05"
-  },
-  {
-    "id": "the-bear",
-    "type": "series",
-    "title": "The Bear",
-    "creator": "Christopher Storer",
-    "year": 2022,
-    "rating": 4,
-    "genres": [
-      "Drama",
-      "Comedia"
-    ],
-    "note": "Ritmo de cocina real; la tensión se siente en el estómago.",
-    "favorite": false,
-    "poster": null,
-    "added": "2024-12-01"
-  },
-  {
-    "id": "in-rainbows",
-    "type": "music",
-    "title": "In Rainbows",
-    "creator": "Radiohead",
-    "year": 2007,
-    "rating": 5,
-    "genres": [
-      "Rock alternativo",
-      "Art rock"
-    ],
-    "note": "Su disco más cálido y humano; crece con cada escucha.",
-    "favorite": true,
-    "poster": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/dd/50/c7/dd50c790-99ac-d3d0-5ab8-e3891fb8fd52/634904032463.png/600x600bb.jpg",
-    "added": "2024-06-22"
-  },
+SEED_EXTRA = [
   {
     "id": "spartacus",
     "type": "series",
@@ -178,7 +47,7 @@ SEEDS = [
     ],
     "note": "Familia Shelby domina Birmingham entre guerras y negocios oscuros.",
     "favorite": false,
-    "poster": "https://image.tmdb.org/t/p/w500/dQjmI7XxI47v8IM2MUysHG0LuU2.jpg",
+    "poster": null,
     "added": "2025-07-07"
   },
   {
@@ -209,7 +78,7 @@ SEEDS = [
     ],
     "note": "Temporadas tipo antología con casos oscuros y personajes atormentados.",
     "favorite": false,
-    "poster": "https://image.tmdb.org/t/p/w500/dC7jkj2g1aU8sxKqM6D4g44xA6w.jpg",
+    "poster": null,
     "added": "2025-07-07"
   },
   {
@@ -240,7 +109,7 @@ SEEDS = [
     ],
     "note": "Terapia, familia y mafia en Nueva Jersey.",
     "favorite": false,
-    "poster": "https://image.tmdb.org/t/p/w500/rTc7ZXdroqjkKivFPvCPX0Ru7uw.jpg",
+    "poster": null,
     "added": "2025-07-07"
   },
   {
@@ -272,7 +141,7 @@ SEEDS = [
     ],
     "note": "Forense de día, justiciero nocturno de asesinos.",
     "favorite": false,
-    "poster": "https://image.tmdb.org/t/p/w500/fWwxYAuqY4Na7fKI3Qq2nFWCwG8.jpg",
+    "poster": null,
     "added": "2025-07-07"
   },
   {
@@ -288,7 +157,7 @@ SEEDS = [
     ],
     "note": "Hacker, ansiedad y hackeo global.",
     "favorite": false,
-    "poster": "https://image.tmdb.org/t/p/w500/kv1nRqgebSsREnd7vdC2pSGjpLo.jpg",
+    "poster": null,
     "added": "2025-07-07"
   },
   {
@@ -447,7 +316,7 @@ SEEDS = [
     ],
     "note": "Batman y el Joker en duelo moral impecable.",
     "favorite": false,
-    "poster": "https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg",
+    "poster": null,
     "added": "2025-07-07"
   },
   {
@@ -463,7 +332,7 @@ SEEDS = [
     ],
     "note": "Excesos, dinero y autodestrucción en Wall Street.",
     "favorite": false,
-    "poster": "https://image.tmdb.org/t/p/w500/uh8bwvgGXeUKzdL4oSul9zxyTcd.jpg",
+    "poster": null,
     "added": "2025-07-07"
   },
   {
@@ -479,7 +348,7 @@ SEEDS = [
     ],
     "note": "Primera regla: no hablar de Fight Club.",
     "favorite": false,
-    "poster": "https://image.tmdb.org/t/p/w500/jSziioSwPVrOy9Yow3XhWIBDjq1.jpg",
+    "poster": null,
     "added": "2025-07-07"
   },
   {
@@ -494,7 +363,7 @@ SEEDS = [
     ],
     "note": "Pastilla azul o roja; simulación y significado.",
     "favorite": false,
-    "poster": "https://image.tmdb.org/t/p/w500/dXNAPwY7VrqMAo51EKhhCJfaGb5.jpg",
+    "poster": null,
     "added": "2025-07-07"
   },
   {
@@ -510,7 +379,7 @@ SEEDS = [
     ],
     "note": "Venganza en la Antigua Roma.",
     "favorite": false,
-    "poster": "https://image.tmdb.org/t/p/w500/wN2xWp1eIwCKOD0BHTcErTBv1Uq.jpg",
+    "poster": null,
     "added": "2025-07-07"
   },
   {
@@ -525,7 +394,7 @@ SEEDS = [
     ],
     "note": "Genio invisible y terapia humana.",
     "favorite": false,
-    "poster": "https://image.tmdb.org/t/p/w500/z2FnLKpFi1HPO7BEJxdkv6hpJSU.jpg",
+    "poster": null,
     "added": "2025-07-07"
   },
   {
@@ -541,7 +410,7 @@ SEEDS = [
     ],
     "note": "Origen trágico del villano sin máscara social.",
     "favorite": false,
-    "poster": "https://image.tmdb.org/t/p/w500/A3i9loBgC3fAYFKzKCRxKZvHZ1G.jpg",
+    "poster": null,
     "added": "2025-07-07"
   },
   {
@@ -557,7 +426,7 @@ SEEDS = [
     ],
     "note": "Misión en tiempo real en la Primera Guerra Mundial.",
     "favorite": false,
-    "poster": "https://image.tmdb.org/t/p/w500/betExZlgK0l7CZ9CsCBVcwO1OjL.jpg",
+    "poster": null,
     "added": "2025-07-07"
   },
   {
@@ -573,7 +442,7 @@ SEEDS = [
     ],
     "note": "Isla, locura y una verdad incómoda.",
     "favorite": false,
-    "poster": "https://image.tmdb.org/t/p/w500/nrmXQ0zcZUL8jFLrakWc90IR8z9.jpg",
+    "poster": null,
     "added": "2025-07-07"
   },
   {
@@ -589,7 +458,7 @@ SEEDS = [
     ],
     "note": "Noche sucia y soledad en las calles.",
     "favorite": false,
-    "poster": "https://image.tmdb.org/t/p/w500/ekstpH614fwDX8DUln1a2Opz0N8.jpg",
+    "poster": null,
     "added": "2025-07-07"
   },
   {
@@ -605,7 +474,7 @@ SEEDS = [
     ],
     "note": "Persecución implacable en el desierto.",
     "favorite": false,
-    "poster": "https://image.tmdb.org/t/p/w500/hA2ple9q4qnwxp3hKVNhroipsir.jpg",
+    "poster": null,
     "added": "2025-07-07"
   },
   {
@@ -621,7 +490,7 @@ SEEDS = [
     ],
     "note": "Cualquiera puede cocinar con pasión.",
     "favorite": false,
-    "poster": "https://image.tmdb.org/t/p/w500/t3vaWRPSf6WjDSamIkKDs1iQWna.jpg",
+    "poster": null,
     "added": "2025-07-07"
   },
   {
@@ -637,7 +506,7 @@ SEEDS = [
     ],
     "note": "Chico, dragón y confianza entre especies.",
     "favorite": false,
-    "poster": "https://image.tmdb.org/t/p/w500/ygGmAO60t8GyqUo9xYeYxSZAR3b.jpg",
+    "poster": null,
     "added": "2025-07-07"
   },
   {
@@ -653,7 +522,7 @@ SEEDS = [
     ],
     "note": "Susto como energía hasta que una niña lo cambia.",
     "favorite": false,
-    "poster": "https://image.tmdb.org/t/p/w500/wFSpyMsp7H0ttERbxY7Trlv8xry.jpg",
+    "poster": null,
     "added": "2025-07-07"
   },
   {
@@ -669,7 +538,7 @@ SEEDS = [
     ],
     "note": "Origen de la sorpresa y la competencia.",
     "favorite": false,
-    "poster": "https://image.tmdb.org/t/p/w500/zzu6IW9ilkUt6L4DL9SoNnwtAfy.jpg",
+    "poster": null,
     "added": "2025-07-07"
   }
 ];
